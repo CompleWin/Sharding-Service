@@ -46,7 +46,7 @@ public class ShardingServiceImpl implements ShardingService {
     public ShardResponseDto get(UUID objectId) {
         return repo.findById(objectId)
                 .map(mapper::toShardResponseDto)
-                .orElseThrow(() -> new ShardAlreadyExistsException(objectId));
+                .orElseThrow(() -> new ShardNotFoundException(objectId));
     }
 
     @Override
