@@ -76,13 +76,13 @@
       "title": "CPU & Heap",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "percentunit" } },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 } },
       "targets": [
-        { "expr": "process_cpu_usage", "legendFormat": "process CPU" },
-        { "expr": "system_cpu_usage", "legendFormat": "system CPU" },
+        { "expr": "avg(process_cpu_usage)", "legendFormat": "process CPU" },
+        { "expr": "avg(system_cpu_usage)", "legendFormat": "system CPU" },
         {
-          "expr": "jvm_memory_used_bytes{area=\"heap\"} / jvm_memory_max_bytes{area=\"heap\"}",
-          "legendFormat": "heap {{id}}"
+          "expr": "sum(jvm_memory_used_bytes{area=\"heap\"}) / sum(jvm_memory_max_bytes{area=\"heap\"})",
+          "legendFormat": "heap used"
         }
       ]
     },
