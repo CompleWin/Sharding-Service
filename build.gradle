@@ -20,16 +20,11 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    // Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc:4.1.0-RC1'
-    // Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
-    implementation 'org.springframework.boot:spring-boot-starter-validation:4.1.0-RC1'
-    // Source: https://mvnrepository.com/artifact/org.postgresql/postgresql
-    implementation 'org.postgresql:postgresql:42.7.11'
-    // Source: https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    implementation 'org.flywaydb:flyway-core:12.6.1'
-    // Source: https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql
-    runtimeOnly 'org.flywaydb:flyway-database-postgresql:12.6.1'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
