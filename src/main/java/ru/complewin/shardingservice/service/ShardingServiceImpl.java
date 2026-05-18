@@ -3,7 +3,7 @@ package ru.complewin.shardingservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import ru.complewin.shardingservice.api.dto.ShardResponse;
+import ru.complewin.shardingservice.api.dto.ShardResponseDto;
 import ru.complewin.shardingservice.domain.ShardingRepository;
 import ru.complewin.shardingservice.domain.exceptions.ShardAlreadyExistsException;
 import ru.complewin.shardingservice.domain.exceptions.ShardNotFoundException;
@@ -26,7 +26,7 @@ public class ShardingServiceImpl implements ShardingService {
     }
 
     @Override
-    public ShardResponse create(UUID objectId, short shardIndex) {
+    public ShardResponseDto create(UUID objectId, short shardIndex) {
         try {
             ShardRow row = repo.insert(objectId, shardIndex);
             return mapper.toShardResponseDto(row);
@@ -36,14 +36,14 @@ public class ShardingServiceImpl implements ShardingService {
     }
 
     @Override
-    public ShardResponse update(UUID objectId, short shardIndex) {
+    public ShardResponseDto update(UUID objectId, short shardIndex) {
         return repo.update(objectId, shardIndex)
                 .map(mapper::toShardResponseDto)
                 .orElseThrow(() -> new ShardNotFoundException(objectId));
     }
 
     @Override
-    public ShardResponse get(UUID objectId) {
+    public ShardResponseDto get(UUID objectId) {
         return repo.findById(objectId)
                 .map(mapper::toShardResponseDto)
                 .orElseThrow(() -> new ShardAlreadyExistsException(objectId));
