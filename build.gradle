@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'net.ltgt.errorprone' version '4.3.0'
 }
 
 group = 'ru.complewin'
@@ -35,6 +36,10 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 
+    implementation 'org.jspecify:jspecify:1.0.0'
+    errorprone 'com.google.errorprone:error_prone_core:2.49.0'
+    errorprone 'com.uber.nullaway:nullaway:0.13.4'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -48,4 +53,19 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile).configureEach { task ->
+    options.errorprone {
+        disableAllChecks = true
+        check("NullAway", CheckSeverity.ERROR)
+        option("NullAway:OnlyNullMarked", "true")
+        option("NullAway:JSpecifyMode", "true")
+    }
+
+    if (task.name.toLowerCase().contains("test")) {
+        options.errorprone.enabled = false
+    }
 }

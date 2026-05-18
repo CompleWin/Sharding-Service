@@ -57,6 +57,39 @@ services:
     depends_on:
       - prometheus
 
+  k6:
+    image: grafana/k6:latest
+    container_name: sharding-k6
+    profiles: [ "load-test" ]
+    environment:
+      BASE_URL: http://app:8080
+    volumes:
+      - ./load-tests:/scripts:ro
+    command: run /scripts/load-test.js
+    depends_on:
+      app:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sharding-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/sharding
+      DB_USER: sharding
+      DB_PASSWORD: sharding
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
 volumes:
   postgres-data:
   grafana-data:
