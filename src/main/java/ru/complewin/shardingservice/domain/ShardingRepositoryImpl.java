@@ -88,9 +88,8 @@ public class ShardingRepositoryImpl implements ShardingRepository {
 
     @Override
     public long count() {
-        Long n = jdbc.sql("SELECT COUNT(*) FROM object_shard")
+        return jdbc.sql("SELECT COUNT(*) FROM object_shard")
                 .query(Long.class)
                 .single();
-        return n == null ? 0L : n;
     }
 }
